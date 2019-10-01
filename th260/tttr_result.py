@@ -91,10 +91,10 @@ class binnableTable(ExtendableTable):
     def bin_count(self):
         """Get bin counts with factor given in set_bin_time."""
 
-        if self._bin_time is None:
-            raise RuntimeError('Need to set bin time.')
+        if self._bin_factor is None:
+            raise RuntimeError('Need to set bin factor.')
 
-        newpos = len(self._size)
+        newpos = self._size
         if newpos == self._bin_read_position:
             return self._bin_counts
 
@@ -131,7 +131,10 @@ class T2Result():
         self._bin_time = bin_time
         self.global_resolution = global_resolution
 
-        bin_factor = int(1e12 * self._bin_time / self.global_resolution)
+        if self._bin_time:
+            bin_factor = int(1e12 * self._bin_time / self.global_resolution)
+        else:
+            bin_factor = None
 
         # uint64 doesn't work with bincount
         # (https://github.com/numpy/numpy/issues/823)

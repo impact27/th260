@@ -119,8 +119,10 @@ if warnings:
 print("\nPress RETURN to start")
 input()
 
-print(f'Starting data collection, {tacq}s')
-data = device.record_data(outputfilename, tacq)
+print(f'Starting data collection, {tacq}ms')
+device.measure(tacq)
+data = device.get_records()[1].time_s()
 print(f'End Recording, {len(data)}')
+device.save_data(outputfilename)
 
 print("\nDone")
